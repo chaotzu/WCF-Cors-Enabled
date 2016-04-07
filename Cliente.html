@@ -1,0 +1,118 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+
+</head>
+<body>
+    <!--Cualquier cosa <input id="txt" type="text" /><button id="WCFcall">Get WCF data</button>-->
+    Obtener empleados <button id="Empleado">Empleados</button>
+    <div style="float: right;"><h4>Elige un archivo</h4><input id="ArchivoVoBo" type="file" name="Package" accept="image/*,application/pdf,application/msword" onchange="SubeArchivo(this.files[0]);" /><progress min="0" max="100" value="0">0% complete</progress></div>
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script>
+        
+        $(document).ready(function () {/*
+            $("button").click(function () {
+                alert("WCF clic");
+                var data = $("#txt").val();
+                var postdata = {};
+                var data_obj = { "BoolValue": "true", "StringValue": data }
+                postdata["value"] = data_obj;
+
+                //var url = "http://localhost:60429/Service1.svc/TestMethod";
+                
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(postdata),
+                    dataType: "json",
+                    success: function (data) { console.log(data); alert(data.toString()); },
+                    error: function (a, b, c) { console.log(a); alert(a.toString()); }
+                });
+    s        });*/
+
+            $("button").click(function () {
+                console.log("Empleado clic");
+                alert("Empleado clic");
+                //var data = $("#txt").val();
+                var data = "";
+                var postdata = {};
+                var data_obj = { "BoolValue": "true", "StringValue": data }
+                postdata["value"] = data_obj;
+
+                //var url = "http://localhost:60429/Service1.svc/TestMethod";
+                var url = "http://localhost:60429/Service1.svc/Empleados";
+                
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(postdata),
+                    dataType: "json",
+                    success: function (data) { console.log(data); alert(data.toString()); },
+                    error: function (a, b, c) { console.log(a); alert(a.toString()); }
+                });
+            });
+
+        });
+
+</script>
+
+<script>
+    function SubeArchivo(blobOrFile) {
+
+        var xhr = new XMLHttpRequest();        
+        xhr.open('POST', "http://localhost:60429/Service1.svc/Cargar", true);
+        
+
+
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhr.onload = function (e) {
+            progressBar.value = 0;
+            progressBar.textContent = progressBar.value;
+        };
+
+        // Listen to the upload progress.
+        var progressBar = document.querySelector('progress');
+        xhr.upload.onprogress = function (e) {
+            if (e.lengthComputable) {
+                progressBar.value = (e.loaded / e.total) * 100;
+                progressBar.textContent = progressBar.value; // Fallback.
+            }
+        };
+
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                globalVar = true;
+                //callback(xhr.responseText, xhr.readyState, xhr.status, numsArray); // Another callback here
+                console.log(xhr.responseText);
+            }
+            else if (xhr.readyState == 0)
+                //alert("Petición no iniciada");
+                //callback(xhr.responseText, xhr.readyState, xhr.status, numsArray); // Another callback here
+                console.log(xhr.responseText);
+            else if (xhr.readyState == 1)
+                //callback(xhr.responseText, xhr.readyState, xhr.status, numsArray); // Another callback here
+                console.log(xhr.responseText);
+            else if (xhr.readyState == 2)
+                //callback(xhr.responseText, xhr.readyState, xhr.status, numsArray); // Another callback here
+                console.log(xhr.responseText);
+            else if (xhr.readyState == 3)
+                //callback(xhr.responseText, xhr.readyState, xhr.status, numsArray); // Another callback here
+                console.log(xhr.responseText);
+            else if (xhr.status == 400)
+                //callback(xhr.responseText, xhr.readyState, xhr.status, numsArray); // Another callback here
+                console.log(xhr.responseText);
+            else if (xhr.status == 405)
+                //callback(xhr.responseText, xhr.readyState, xhr.status, numsArray); // Another callback here
+                console.log(xhr.responseText);
+        };     
+        xhr.send(blobOrFile);
+    }
+</script>
+
+</html>
